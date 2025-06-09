@@ -1,4 +1,5 @@
 import User from "../models/user-model.js"
+import bcrypt from 'bcryptjs';
 
 //directly use export in front of arrow function instead of writing at end
 export const home = async(req,res) => {    //es module type 
@@ -21,6 +22,12 @@ export const registration = async(req,res) => {
         if(userExits){
             return res.status(200).json({message:"email already exists"});
         }
+
+        //hashing the password
+        //1st way and 2 way using the pre method
+        // const saltround = 10;
+        // const hashpassword = await bcrypt.hash(password, saltround);
+        //hash it where we are creating the schema, whenever we will call any database method usinf the User model it firstly executes the pre method in user-model.js
 
         const usercreated = await User.create({username, email, phone, password});
         res.status(200).json({message:usercreated});
